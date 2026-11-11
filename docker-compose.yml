@@ -1,7 +1,3 @@
-cd ~/nckh-ctdlgt
-
-# 1. Cập nhật lại docker-compose.yml (truyền NEO4J_URI=bolt://neo4j:7687 và kiểm tra đúng cổng 7687)
-cat << 'EOF' > docker-compose.yml
 services:
   neo4j:
     image: neo4j:5.26.0-community
@@ -37,17 +33,7 @@ services:
     depends_on:
       neo4j:
         condition: service_healthy
-    command: >
-      bash -c "pip install --no-cache-dir neo4j==5.28.1 && python scripts/init_db.py"
+    command: bash -c "pip install --no-cache-dir neo4j==5.28.1 && python scripts/init_db.py"
 
 volumes:
   neo4j_data:
-EOF
-
-# 2. Xóa phần mềm thừa welcome-to-docker (nếu có) và chạy lại docker compose
-rm -rf welcome-to-docker
-docker compose down
-docker compose up -d
-
-# 3. Xem kết quả chạy của container nạp dữ liệu (sẽ hiện 3 dòng [OK])
-docker logs -f nckh_neo4j_init
